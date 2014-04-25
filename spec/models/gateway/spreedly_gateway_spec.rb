@@ -8,7 +8,7 @@ describe Spree::Gateway::SpreedlyGateway do
    before(:each) do
    	Spree::Gateway.update_all :active => false
    	@gateway = Spree::Gateway::SpreedlyGateway.create!(:name => "Spreedly Gateway")
-	@gateway.set_preference(:login, "XN2GQHbxs61ZK8Rot3uwCBykf7A")
+    @gateway.set_preference(:login, "XN2GQHbxs61ZK8Rot3uwCBykf7A")
     @gateway.set_preference(:password, "wXOXo7pVYCU1a14Jpl9XJ7vZYSwIyHk4TJl4U2R4PZxxo2pqM1V4u04H4swh4Apc")
     @gateway.set_preference(:gateway_token, "3XToJgBVqKXtvRLqn8gJ8bt7054")
 
@@ -35,7 +35,7 @@ describe Spree::Gateway::SpreedlyGateway do
       @payment.payment_method.environment = "test"
     end
   end
-  
+
   it "should be Spreedly gateway" do
     @gateway.provider_class.should == ::ActiveMerchant::Billing::SpreedlyCoreGateway
   end
@@ -118,11 +118,11 @@ describe Spree::Gateway::SpreedlyGateway do
   end
 
   describe "void" do
-    pending "should work through the spree credit_card / payment interface" do
+    it "should work through the spree credit_card / payment interface" do
       assert_equal 0, @payment.log_entries.size
       @payment.process!
       assert_equal 1, @payment.log_entries.size
-      @credit_card.void(@payment)
+      @payment.void(@credit_card)
       @payment.state.should == 'void'
     end
   end

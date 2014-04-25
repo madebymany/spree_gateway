@@ -17,8 +17,7 @@ module Spree
         response = provider.store(payment.source)
 
         if response.success?
-          #or should this be setting the  gateway_payment_profile_id 
-          payment.source.update_attributes!(:gateway_customer_profile_id => response.params['payment_method_token'])
+          #or should this be setting the  gateway_payment_profile_id
           last_4 = response.params['payment_method_last_four_digits']
           payment.source.last_digits = last_4 if last_4
           payment.source.gateway_customer_profile_id = response.params['payment_method_token']
@@ -37,6 +36,11 @@ module Spree
     def purchase(money, creditcard, options = {})
       payment_method = creditcard.gateway_customer_profile_id || creditcard
       provider.purchase(money, payment_method, options)
+    end
+
+    def void(money, creditcard, options = {})
+      payment_method = creditcard.gateway_customer_profile_id || creditcard
+      provider.void(creditcard, options)
     end
 
   end
