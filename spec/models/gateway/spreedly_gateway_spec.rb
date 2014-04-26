@@ -122,7 +122,7 @@ describe Spree::Gateway::SpreedlyGateway do
       assert_equal 0, @payment.log_entries.size
       @payment.process!
       assert_equal 1, @payment.log_entries.size
-      @payment.void(@credit_card)
+      @payment.void_transaction!
       @payment.state.should == 'void'
     end
   end

@@ -38,9 +38,9 @@ module Spree
       provider.purchase(money, payment_method, options)
     end
 
-    def void(money, creditcard, options = {})
-      payment_method = creditcard.gateway_customer_profile_id || creditcard
-      provider.void(creditcard, options)
+    def void(identifier, creditcard, options = {})
+      identifier = identifier || creditcard.gateway_customer_profile_id
+      provider.void(identifier, options)
     end
 
   end
