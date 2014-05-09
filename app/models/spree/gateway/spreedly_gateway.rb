@@ -14,7 +14,12 @@ module Spree
 
     def create_profile(payment)
       if payment.source.gateway_payment_profile_id.nil?
-        response = provider.store(payment.source)
+        options = {}
+        options[:email] = payment.order.email
+        options.merge!({ :billing_address  => payment.order.bill_address.try(:active_merchant_hash),
+                        :shipping_address => payment.order.ship_address.try(:active_merchant_hash) })
+
+        response = provider.store(payment.source, options)
 
         if response.success?
           #or should this be setting the  gateway_payment_profile_id
